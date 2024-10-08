@@ -3163,57 +3163,57 @@ router.post('/button-block', async (req, res) => {
   }
 });
 
-router.get('/meditation-date', async (req, res) => {
-  try {
-    console.log("..................meditation-date...................");
+// router.get('/meditation-date', async (req, res) => {
+//   try {
+//     console.log("..................meditation-date...................");
 
-    const { UId } = req.body;
-    console.log(UId);
-    if (!UId) {
-      return res.status(401).json({ error: 'User not authenticated' });
-    }
+//     const { UId } = req.body;
+//     console.log(UId);
+//     if (!UId) {
+//       return res.status(401).json({ error: 'User not authenticated' });
+//     }
 
-    // Validate and parse page query parameter
+//     // Validate and parse page query parameter
     
-    const page = req.query.page ? parseInt(req.query.page, 10) : 1;
-    const limit = 25;
+//     const page = req.query.page ? parseInt(req.query.page, 10) : 1;
+//     const limit = 25;
 
-    const offset = (page - 1) * limit;
+//     const offset = (page - 1) * limit;
 
-    const totalCount = await timeTracking.count({ where: { UId } });
-    const totalPages = Math.ceil(totalCount / limit);
-    const date = await timeTracking.findAll({
-      attributes:['med_starttime'],
-    where: { UId: UId}});
-    //console.log(date);
-    const FormatData = date.format('YYYY-MM-DD HH:mm:ss');
-    console.log(FormatData);
-    const user = await timeTracking.findAll({
-      attributes: ['UId', 'med_starttime','ismeditated'],
-      where: {
-        UId: UId,
-        ismeditated:1
-      },
-      limit,
-      offset
-    });
+//     const totalCount = await timeTracking.count({ where: { UId } });
+//     const totalPages = Math.ceil(totalCount / limit);
+//     const date = await timeTracking.findAll({
+//       attributes:['med_starttime'],
+//     where: { UId: UId}});
+//     //console.log(date);
+//     const FormatData = date.format('YYYY-MM-DD HH:mm:ss');
+//     console.log(FormatData);
+//     const user = await timeTracking.findAll({
+//       attributes: ['UId', 'med_starttime','ismeditated'],
+//       where: {
+//         UId: UId,
+//         ismeditated:1
+//       },
+//       limit,
+//       offset
+//     });
    
-console.log(user);
-    // Format response data and send it
-    const responseData = {
-      totalPages,
-      currentPage: page,
-      totalCount,
-      data: user
-    };
+// console.log(user);
+//     // Format response data and send it
+//     const responseData = {
+//       totalPages,
+//       currentPage: page,
+//       totalCount,
+//       data: user
+//     };
 
-    return res.status(200).json(responseData);
+//     return res.status(200).json(responseData);
 
-  } catch (error) {
-    console.log('Error:', error);
-    return res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
+//   } catch (error) {
+//     console.log('Error:', error);
+//     return res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// });
 
 router.get('/listblogs', async (req, res) => {
   try {

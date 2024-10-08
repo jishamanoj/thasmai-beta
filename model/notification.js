@@ -15,11 +15,11 @@ const notification = sequelize.define('notification', {
  {
     timestamps: false,
 })
-notification.sync({alter: true}).then((data)=>{
-    console.log("notification table create ");
-})
-.catch((err)=>{
-    console.log(err);
-}
-);
+// notification.sync({alter: false}).then((data)=>{
+//     console.log("notification table create ");
+// })
+// .catch((err)=>{
+//     console.log(err);
+// }
+// );
 module.exports = notification;

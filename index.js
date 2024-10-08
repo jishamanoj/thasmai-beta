@@ -18,13 +18,38 @@ const sessionMiddleware = session({
   });
  
   app.use(sessionMiddleware);
-  // app.use(function(){
-  //   console.log('session is ....',req.session)  })
-// app.use((req, res, next) => {
-//     console.log(".......................",req.session,"url",req.url);
-// next()
-// })
 app.use('/api/v1', require('./router/routing')); // Corrected the router path
+
+const { Worker } = require('worker_threads');
+
+function startAppointmentWorker() {
+  const worker = new Worker('./worker.js'); // Adjust the path as necessary
+
+  worker.on('error', (error) => {
+    console.error('Worker error:', error);
+  });
+
+  worker.on('exit', (code) => {
+    if (code !== 0) {
+      console.error(`Worker stopped with exit code ${code}`);
+    }
+  });
+
+  // Send a message to start fetching and notifying appointments
+  worker.postMessage('start');
+
+  return worker;
+}
+
+// Start the worker immediately
+let appointmentWorker = startAppointmentWorker();
+
+// Set an interval to restart the worker every hour (3600000 ms)
+setInterval(() => {
+  console.log('Restarting appointment worker...');
+  appointmentWorker.terminate(); // Terminate the old worker
+  appointmentWorker = startAppointmentWorker(); // Start a new worker
+}, 10000);
 
 const httpServer = http.createServer(app)
 
